@@ -14,7 +14,7 @@
 	<name>nails</name>
 	<description>Gestion de nails</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -48,6 +48,11 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.20</version> <!-- Usa la versión más reciente compatible -->
+		</dependency>
     </dependencies>
 
 	<build>
