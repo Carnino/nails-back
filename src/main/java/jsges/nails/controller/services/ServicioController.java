@@ -75,6 +75,22 @@ public class ServicioController {
         Servicio servicioGuardado = modelService.crearServicioConItems(modelDTO);
         return new ResponseEntity<>(servicioGuardado, HttpStatus.CREATED);
     }
+    
+    @PutMapping("/servicioEliminar/{id}")
+    public ResponseEntity<Servicio> eliminarServicio(@PathVariable Integer id) {
+        Servicio servicio = modelService.buscarPorId(id);
+        if (servicio == null) {
+            throw new RecursoNoEncontradoExcepcion("El id recibido no existe: " + id);
+        }
 
+        servicio.setEstado(1);  // Suponiendo que 1 significa "eliminado" en tu lógica
+        modelService.guardar(servicio);
+
+        return ResponseEntity.ok(servicio);
+    }
+
+
+
+    
 }
 

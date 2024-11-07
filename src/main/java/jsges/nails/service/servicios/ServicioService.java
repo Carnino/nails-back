@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import jsges.nails.domain.servicios.TipoServicio;
+import jsges.nails.excepcion.RecursoNoEncontradoExcepcion;
 import jsges.nails.service.organizacion.IClienteService;
 
 @Service
@@ -153,4 +154,6 @@ public class ServicioService implements IServicioService {
 
         return servicioGuardado;
     }
+    
+
 }
