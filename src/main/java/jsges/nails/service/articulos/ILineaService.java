@@ -27,4 +27,6 @@ public interface ILineaService {
     public List<Linea> buscar(String consulta);
 
     public Linea newModel(LineaDTO model);
+
+    public boolean isLineaExistente(String denominacion);
 }

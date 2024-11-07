@@ -32,45 +32,39 @@ public class LineaService implements ILineaService {
         return modelRepository.findById(id).orElse(null);
     }
 
-
-
     @Override
     public Linea guardar(Linea model) {
         return modelRepository.save(model);
     }
 
-
     @Override
     public Linea newModel(LineaDTO modelDTO) {
-        Linea model =  new Linea(modelDTO);
+        Linea model = new Linea(modelDTO);
         return guardar(model);
     }
 
-
     @Override
     public void eliminar(Linea model) {
-
         modelRepository.save(model);
     }
 
     @Override
     public List<Linea> listar(String consulta) {
-        //logger.info("service " +consulta);
         return modelRepository.buscarNoEliminados(consulta);
     }
 
     @Override
     public Page<Linea> getLineas(Pageable pageable) {
-        return  modelRepository.findAll(pageable);
+        return modelRepository.findAll(pageable);
     }
 
+    @Override
     public List<Linea> buscar(String consulta) {
         return modelRepository.buscarExacto(consulta);
     }
 
-
     @Override
-    public Page<LineaDTO> findPaginated(Pageable pageable, List<LineaDTO>lineas) {
+    public Page<LineaDTO> findPaginated(Pageable pageable, List<LineaDTO> lineas) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
@@ -82,10 +76,12 @@ public class LineaService implements ILineaService {
             list = lineas.subList(startItem, toIndex);
         }
 
-        Page<LineaDTO> bookPage
-                = new PageImpl<LineaDTO>(list, PageRequest.of(currentPage, pageSize), lineas.size());
-
-        return bookPage;
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), lineas.size());
     }
 
+    // **Método adicional**: Este método verifica si ya existe una línea antes de agregarla
+    public boolean isLineaExistente(String denominacion) {
+        List<Linea> lista = modelRepository.buscarExacto(denominacion);
+        return !lista.isEmpty();
+    }
 }
