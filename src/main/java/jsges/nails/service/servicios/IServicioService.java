@@ -24,4 +24,11 @@ public interface IServicioService {
 
     public List<Servicio> listar(String consulta);
 
+    public List<ServicioDTO> obtenerServiciosConItems();
+
+    public ServicioDTO obtenerServicioConItemsPorId(Integer id);
+    
+    public Page<ServicioDTO> obtenerServiciosPaginados(String consulta, int page, int size);
+    
+    public Servicio crearServicioConItems(ServicioDTO modelDTO);
 }

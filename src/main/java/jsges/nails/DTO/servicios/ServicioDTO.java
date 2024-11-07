@@ -42,7 +42,19 @@ public class ServicioDTO{
         this.clienteRazonSocial = elemento.getCliente().getRazonSocial();
         this.fechaDocumento = elemento.getFechaRealizacion();
         this.total= elemento.getTotal();
-
-
     }
+
+    public Integer getCliente() {
+        return cliente;
+    }
+
+    public Timestamp getFechaDocumento() {
+        return fechaDocumento;
+    }
+
+    public Set<ItemServicioDTO> getListaItems() {
+        return listaItems;
+    }
+    
+    
 }
