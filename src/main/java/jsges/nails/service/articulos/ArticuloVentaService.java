@@ -80,6 +80,16 @@ public class ArticuloVentaService implements IArticuloVentaService{
         return listadoDTO;
     }
 
+    @Override
+    public Page<ArticuloVentaDTO> listarPaginadoDTO(String consulta, Pageable pageable) {
+        List<ArticuloVenta> articulos = modelRepository.buscarNoEliminados(consulta);
+        List<ArticuloVentaDTO> listadoDTO = new ArrayList<>();
+        articulos.forEach(articulo -> listadoDTO.add(new ArticuloVentaDTO(articulo)));
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), listadoDTO.size());
+        return new PageImpl<>(listadoDTO.subList(start, end), pageable, listadoDTO.size());
+    }
 
 
 }

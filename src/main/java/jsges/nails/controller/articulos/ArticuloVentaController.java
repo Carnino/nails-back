@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping(value="${path_mapping}")
@@ -42,17 +43,16 @@ public class ArticuloVentaController {
     }
 
 
-    @GetMapping({"/articulosPageQuery"})
-    public ResponseEntity<Page<ArticuloVentaDTO>> getItems(@RequestParam(defaultValue = "") String consulta, @RequestParam(defaultValue = "0") int page,
-                                                        @RequestParam(defaultValue = "${max_page}") int size) {
-        List<ArticuloVenta> listado = modelService.listar(consulta);
-        List<ArticuloVentaDTO> listadoDTO    =  new ArrayList<>();
-        listado.forEach((model) -> {
-            listadoDTO.add(new ArticuloVentaDTO(model));
-        });
-        Page<ArticuloVentaDTO> bookPage = modelService.findPaginated(PageRequest.of(page, size),listadoDTO);
-        return ResponseEntity.ok().body(bookPage);
+    @GetMapping("/articulosPageQuery")
+    public ResponseEntity<Page<ArticuloVentaDTO>> getItems(
+            @RequestParam(defaultValue = "") String consulta,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "${max_page}") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ArticuloVentaDTO> pageResult = modelService.listarPaginadoDTO(consulta, pageable);
+        return ResponseEntity.ok().body(pageResult);
     }
+
 
 
     @PostMapping("/articulos")

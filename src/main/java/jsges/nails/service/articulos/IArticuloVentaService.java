@@ -10,6 +10,7 @@ import java.util.List;
 public interface IArticuloVentaService {
 
     public List<ArticuloVenta> listar();
+    
     public List<ArticuloVentaDTO> listarDTO();
 
     public ArticuloVenta buscarPorId(Integer id);
@@ -23,4 +24,8 @@ public interface IArticuloVentaService {
     public Page<ArticuloVenta> getArticulos(Pageable pageable);
 
     public Page<ArticuloVentaDTO> findPaginated(Pageable pageable, List<ArticuloVentaDTO> list);
+    
+    public Page<ArticuloVentaDTO> listarPaginadoDTO(String consulta, Pageable pageable);
+    
+
 }
