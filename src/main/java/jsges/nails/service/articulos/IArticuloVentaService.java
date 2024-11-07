@@ -27,5 +27,9 @@ public interface IArticuloVentaService {
     
     public Page<ArticuloVentaDTO> listarPaginadoDTO(String consulta, Pageable pageable);
     
+    public ArticuloVentaDTO crearArticulo(ArticuloVentaDTO articuloDTO);
+
+    public ArticuloVentaDTO actualizarArticulo(Integer id, ArticuloVentaDTO modelRecibido);
+
 
 }

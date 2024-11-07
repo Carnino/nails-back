@@ -1,7 +1,6 @@
 package jsges.nails.controller.articulos;
 
 import jsges.nails.DTO.articulos.ArticuloVentaDTO;
-import jsges.nails.DTO.articulos.LineaDTO;
 import jsges.nails.domain.articulos.ArticuloVenta;
 import jsges.nails.domain.articulos.Linea;
 import jsges.nails.excepcion.RecursoNoEncontradoExcepcion;
@@ -15,10 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
 import org.springframework.data.domain.Pageable;
 
 @RestController
@@ -56,18 +53,23 @@ public class ArticuloVentaController {
 
 
     @PostMapping("/articulos")
-    public ArticuloVenta agregar(@RequestBody ArticuloVentaDTO model){
-        logger.info("entra" );
+    public ResponseEntity<ArticuloVentaDTO> agregar(@RequestBody ArticuloVentaDTO model) {
+        logger.info("Intentando agregar un nuevo artículo");
 
-        Integer idLinea = model.linea;
+        if (model.getLinea() == null) {
+            throw new IllegalArgumentException("El ID de la Línea no puede ser nulo.");
+        }
 
-        ArticuloVenta newModel =  new ArticuloVenta();
-        newModel.setDenominacion(model.denominacion);
-        newModel.setLinea(lineaService.buscarPorId(idLinea));
+        Linea linea = lineaService.buscarPorId(model.getLinea());
+        if (linea == null) {
+            throw new IllegalArgumentException("La Línea con el ID especificado no existe.");
+        }
 
-        ArticuloVenta modelSave= modelService.guardar(newModel);
-        return modelSave;
+        ArticuloVentaDTO articuloGuardado = modelService.crearArticulo(model);
+        return ResponseEntity.ok(articuloGuardado);
     }
+
+
 
 
     @DeleteMapping("/articuloEliminar/{id}")
@@ -93,19 +95,11 @@ public class ArticuloVentaController {
     }
 
     @PutMapping("/articulos/{id}")
-    public ResponseEntity<ArticuloVenta> actualizar(@PathVariable Integer id,
-                                                    @RequestBody ArticuloVentaDTO modelRecibido){
-        logger.info("articulo " +modelRecibido);
-        ArticuloVenta model = modelService.buscarPorId(id);
-        logger.info("articulo " +model);
-        if (model == null){
-            throw new RecursoNoEncontradoExcepcion("El id recibido no existe: " + id);
-        }
-        logger.info("articulo " +model);
-        model.setDenominacion(modelRecibido.denominacion);
-        model.setLinea(lineaService.buscarPorId(modelRecibido.linea));
-        modelService.guardar(model);
-        return ResponseEntity.ok(model);
+    public ResponseEntity<ArticuloVentaDTO> actualizar(@PathVariable Integer id,
+                                                       @RequestBody ArticuloVentaDTO modelRecibido) {
+        logger.info("Actualizando artículo con ID: " + id);
+        ArticuloVentaDTO updatedArticulo = modelService.actualizarArticulo(id, modelRecibido);
+        return ResponseEntity.ok(updatedArticulo);
     }
 
 }

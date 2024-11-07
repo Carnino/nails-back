@@ -18,4 +18,14 @@ public class ArticuloVentaDTO extends TipoObjetoDTO {
     public ArticuloVentaDTO( ) {
 
     }
+
+    public String getDenominacion() {
+        return this.denominacion;
+    }
+
+    public Integer getLinea() {
+        return linea;
+    }
+    
+
 }

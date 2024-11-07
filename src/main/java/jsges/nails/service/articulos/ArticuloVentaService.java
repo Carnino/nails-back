@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
+import jsges.nails.domain.articulos.Linea;
+import jsges.nails.excepcion.RecursoNoEncontradoExcepcion;
 
 
 @Service
@@ -22,6 +24,8 @@ public class ArticuloVentaService implements IArticuloVentaService{
     private ArticuloVentaRepository modelRepository;
     private static final Logger logger = LoggerFactory.getLogger(ArticuloVentaService.class);
 
+    @Autowired 
+    private LineaService lineaService;
 
     @Override
     public List<ArticuloVenta> listar() {
@@ -89,6 +93,38 @@ public class ArticuloVentaService implements IArticuloVentaService{
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), listadoDTO.size());
         return new PageImpl<>(listadoDTO.subList(start, end), pageable, listadoDTO.size());
+    }
+
+    @Override
+    public ArticuloVentaDTO crearArticulo(ArticuloVentaDTO articuloDTO) {
+        ArticuloVenta articulo = new ArticuloVenta();
+        articulo.setDenominacion(articuloDTO.getDenominacion());
+
+        Linea linea = lineaService.buscarPorId(articuloDTO.getLinea());
+        if (linea == null) {
+            throw new IllegalArgumentException("La Línea no existe.");
+        }
+        articulo.setLinea(linea);
+
+        ArticuloVenta savedArticulo = modelRepository.save(articulo);
+        return new ArticuloVentaDTO(savedArticulo);
+    }
+
+    @Override
+    public ArticuloVentaDTO actualizarArticulo(Integer id, ArticuloVentaDTO modelRecibido) {
+        ArticuloVenta model = modelRepository.findById(id).orElseThrow(() -> 
+            new RecursoNoEncontradoExcepcion("El artículo con ID " + id + " no existe."));
+
+        Linea linea = lineaService.buscarPorId(modelRecibido.getLinea());
+        if (linea == null) {
+            throw new IllegalArgumentException("La línea con el ID " + modelRecibido.getLinea() + " no existe.");
+        }
+
+        model.setDenominacion(modelRecibido.getDenominacion());
+        model.setLinea(linea);
+
+        ArticuloVenta savedArticulo = modelRepository.save(model);
+        return new ArticuloVentaDTO(savedArticulo);
     }
 
 
