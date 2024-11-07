@@ -29,10 +29,11 @@ public class TipoServicioController {
     }
 
     @GetMapping({"/tiposServicios"})
-    public List<TipoServicio> getAll() {
+    public ResponseEntity<List<TipoServicio>> getAll() {
         List<TipoServicio> tipoServicios = this.modelService.listar();
-        return tipoServicios;
+        return ResponseEntity.ok(tipoServicios);
     }
+
 
     @GetMapping({"/tiposServiciosPageQuery"})
     public ResponseEntity<Page<TipoServicio>> getItems(@RequestParam(defaultValue = "") String consulta, @RequestParam(defaultValue = "0") int page,
