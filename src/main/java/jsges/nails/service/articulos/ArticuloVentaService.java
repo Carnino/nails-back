@@ -1,5 +1,6 @@
 package jsges.nails.service.articulos;
 
+import java.util.ArrayList;
 import jsges.nails.DTO.articulos.ArticuloVentaDTO;
 import jsges.nails.domain.articulos.ArticuloVenta;
 import jsges.nails.repository.articulos.ArticuloVentaRepository;
@@ -70,6 +71,13 @@ public class ArticuloVentaService implements IArticuloVentaService{
                 = new PageImpl<ArticuloVentaDTO>(list, PageRequest.of(currentPage, pageSize), listado.size());
 
         return bookPage;
+    }
+    @Override
+    public List<ArticuloVentaDTO> listarDTO() {
+        List<ArticuloVenta> articulos = modelRepository.buscarNoEliminados();
+        List<ArticuloVentaDTO> listadoDTO = new ArrayList<>();
+        articulos.forEach(articulo -> listadoDTO.add(new ArticuloVentaDTO(articulo)));
+        return listadoDTO;
     }
 
 

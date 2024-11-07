@@ -35,16 +35,12 @@ public class ArticuloVentaController {
 
     }
 
-    @GetMapping({"/articulos"})
+    @GetMapping("/articulos")
     public List<ArticuloVentaDTO> getAll() {
-        logger.info("enta en  traer todas los articulos");
-        List<ArticuloVenta> list = modelService.listar();
-        List<ArticuloVentaDTO> listadoDTO    =  new ArrayList<>();
-        list.forEach((model) -> {
-            listadoDTO.add(new ArticuloVentaDTO(model));
-        });
-        return listadoDTO;
+        logger.info("Entrando en traer todos los artículos");
+        return modelService.listarDTO();
     }
+
 
     @GetMapping({"/articulosPageQuery"})
     public ResponseEntity<Page<ArticuloVentaDTO>> getItems(@RequestParam(defaultValue = "") String consulta, @RequestParam(defaultValue = "0") int page,

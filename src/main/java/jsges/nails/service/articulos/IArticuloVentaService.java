@@ -10,6 +10,7 @@ import java.util.List;
 public interface IArticuloVentaService {
 
     public List<ArticuloVenta> listar();
+    public List<ArticuloVentaDTO> listarDTO();
 
     public ArticuloVenta buscarPorId(Integer id);
 
