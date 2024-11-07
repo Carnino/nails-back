@@ -16,9 +16,15 @@ public interface IClienteService {
 
     public void eliminar(Cliente cliente);
 
-      public List<Cliente> listar(String consulta);
+    public List<Cliente> listar(String consulta);
 
     public Page<Cliente> getClientes(Pageable pageable);
 
     public Page<ClienteDTO> findPaginated(Pageable pageable, List<ClienteDTO> clientes);
+    
+    public List<ClienteDTO> convertirAClienteDTO(List<Cliente> clientes);
+    
+    public Page<ClienteDTO> obtenerClientesPaginados(String consulta, Pageable pageable);
+    
+    public Cliente eliminarCliente(Integer id);
 }

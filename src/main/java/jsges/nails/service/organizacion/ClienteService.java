@@ -1,5 +1,6 @@
 package jsges.nails.service.organizacion;
 
+import java.util.ArrayList;
 import jsges.nails.DTO.Organizacion.ClienteDTO;
 import jsges.nails.domain.organizacion.Cliente;
 import jsges.nails.repository.organizacion.ClienteRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import jsges.nails.excepcion.RecursoNoEncontradoExcepcion;
 
 @Service
 public class ClienteService implements IClienteService {
@@ -67,6 +69,29 @@ public class ClienteService implements IClienteService {
 
         return bookPage;
     }
+    
+
+    public List<ClienteDTO> convertirAClienteDTO(List<Cliente> clientes) {
+        List<ClienteDTO> clienteDTOs = new ArrayList<>();
+        for (Cliente cliente : clientes) {
+            clienteDTOs.add(new ClienteDTO(cliente)); // Asumiendo que el constructor de ClienteDTO acepta un Cliente
+        }
+        return clienteDTOs;
+    }
+
+    public Page<ClienteDTO> obtenerClientesPaginados(String consulta, Pageable pageable) {
+        List<Cliente> clientes = listar(consulta); // Obtener los clientes según la consulta
+        List<ClienteDTO> clienteDTOs = convertirAClienteDTO(clientes); // Convertir a DTO
+        return findPaginated(pageable, clienteDTOs); // Paginación
+    }
+
+    public Cliente eliminarCliente(Integer id) {
+    Cliente cliente = buscarPorId(id);
+    if (cliente == null) throw new RecursoNoEncontradoExcepcion("Cliente no encontrado");
+
+    cliente.setEstado(1); // Eliminar de manera lógica
+    return guardar(cliente); // Guardamos el cliente con el nuevo estado
+}
 
 
 }

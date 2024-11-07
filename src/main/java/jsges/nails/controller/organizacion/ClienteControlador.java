@@ -31,28 +31,23 @@ public class ClienteControlador {
     public ClienteControlador() {
     }
 
-    @GetMapping({"/clientes"})
+    @GetMapping("/clientes")
     public List<ClienteDTO> getAll() {
-        List<ClienteDTO> listadoDTO    =  new ArrayList<>();
-        List<Cliente> list = this.clienteServicio.listar();
-
-        list.forEach((model) -> {
-            listadoDTO.add(new ClienteDTO(model));
-        });
-        return listadoDTO;
+        List<Cliente> clientes = clienteServicio.listar(); // Obtenemos los clientes desde el servicio
+        return clienteServicio.convertirAClienteDTO(clientes); // Delegamos la conversión
     }
 
-    @GetMapping({"/clientesPageQuery"})
-    public ResponseEntity<Page<ClienteDTO>> getItems(@RequestParam(defaultValue = "") String consulta,@RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "${max_page}") int size) {
-        List<Cliente> listado = clienteServicio.listar(consulta);
-        List<ClienteDTO> listadoDTO    =  new ArrayList<>();
-        listado.forEach((model) -> {
-            listadoDTO.add(new ClienteDTO(model));
-        });
-        Page<ClienteDTO> bookPage = clienteServicio.findPaginated(PageRequest.of(page, size),listadoDTO);
-        return ResponseEntity.ok().body(bookPage);
+
+    @GetMapping("/clientesPageQuery")
+    public ResponseEntity<Page<ClienteDTO>> getItems(
+            @RequestParam(defaultValue = "") String consulta,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "${max_page}") int size) {
+
+        Page<ClienteDTO> clientes = clienteServicio.obtenerClientesPaginados(consulta, PageRequest.of(page, size));
+        return ResponseEntity.ok().body(clientes);
     }
+
 
 
     @PostMapping("/clientes")
@@ -63,16 +58,11 @@ public class ClienteControlador {
 
 
     @PutMapping("/clienteEliminar/{id}")
-    public ResponseEntity<Cliente> eliminar(@PathVariable Integer id){
-        Cliente model = clienteServicio.buscarPorId(id);
-        if (model == null)
-            throw new RecursoNoEncontradoExcepcion("El id recibido no existe: " + id);
-
-        model.setEstado(1);
-
-        clienteServicio.guardar(model);
-        return ResponseEntity.ok(model);
+    public ResponseEntity<Cliente> eliminar(@PathVariable Integer id) {
+        Cliente cliente = clienteServicio.eliminarCliente(id);
+        return ResponseEntity.ok(cliente);
     }
+
 
     @GetMapping("/cliente/{id}")
     public ResponseEntity<Cliente> getPorId(@PathVariable Integer id){
