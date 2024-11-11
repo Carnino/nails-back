@@ -55,6 +55,10 @@ public class ServicioDTO{
     public Set<ItemServicioDTO> getListaItems() {
         return listaItems;
     }
+
+    public Double getTotal(){
+        return total;
+    }
     
     
 }

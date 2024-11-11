@@ -137,6 +137,7 @@ public class ServicioService implements IServicioService {
         newModel.setFechaRegistro(modelDTO.getFechaDocumento());
         newModel.setFechaRealizacion(modelDTO.getFechaDocumento());
         newModel.setEstado(0);
+        newModel.setTotal(modelDTO.getTotal());
         
         Servicio servicioGuardado = guardar(newModel);
 
