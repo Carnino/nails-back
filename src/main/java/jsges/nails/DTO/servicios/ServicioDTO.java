@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ServicioDTO{
+public class ServicioDTO {
 
     public Integer id;
     public Integer cliente;
@@ -18,30 +18,31 @@ public class ServicioDTO{
     public Set<ItemServicioDTO> listaItems = new HashSet<>();
     public Double total;
     public String clienteRazonSocial;
+
     public ServicioDTO() {
 
     }
 
-    public ServicioDTO(Servicio elemento, List<ItemServicio>list) {
+    public ServicioDTO(Servicio elemento, List<ItemServicio> list) {
 
         this.id = elemento.getId();
         this.cliente = elemento.getCliente().getId();
         this.clienteRazonSocial = elemento.getCliente().getRazonSocial();
         this.fechaDocumento = elemento.getFechaRealizacion();
-        this.total= elemento.getTotal();
+        this.total = elemento.getTotal();
 
         list.forEach((model) -> {
-           listaItems.add(new ItemServicioDTO(model));
+            listaItems.add(new ItemServicioDTO(model));
         });
     }
 
-    public ServicioDTO(Servicio elemento){
+    public ServicioDTO(Servicio elemento) {
 
         this.id = elemento.getId();
         this.cliente = elemento.getCliente().getId();
         this.clienteRazonSocial = elemento.getCliente().getRazonSocial();
         this.fechaDocumento = elemento.getFechaRealizacion();
-        this.total= elemento.getTotal();
+        this.total = elemento.getTotal();
     }
 
     public Integer getCliente() {
@@ -55,6 +56,9 @@ public class ServicioDTO{
     public Set<ItemServicioDTO> getListaItems() {
         return listaItems;
     }
-    
-    
+
+    public Double getTotal() {
+        return total;
+    }
+
 }
