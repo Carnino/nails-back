@@ -38,6 +38,39 @@ public class Cliente implements Serializable {
 
         Date fechaInicio;
         Date fechaNacimiento;
-
-
+        
+        
+        public void setLetra(String nombre){
+            this.letra = nombre;
+            
+        }
+        public void setRazonSocial(String razon){
+            this.razonSocial = razon;
+            
+        }
+        public void setContacto(String contacto){
+            this.contacto = contacto;
+            
+        }
+        public void setFechaInicio(Date fechaI){
+            this.fechaInicio = fechaI;
+            
+        }
+        public void setFechaNacimineto(Date fechaN){
+            this.fechaNacimiento = fechaN;
+        }
+        public void setCelular(String celular){
+            this.celular = celular;
+        }
+        public void setMail(String mail){
+            this.mail = mail;
+            
+        }
+        
+        public String getMail(){
+            return this.mail;
+        }
+        public String getCelular(){
+            return this.celular;
+        }
 }

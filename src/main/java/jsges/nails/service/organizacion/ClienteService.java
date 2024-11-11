@@ -35,7 +35,14 @@ public class ClienteService implements IClienteService {
 
     @Override
     public Cliente guardar(Cliente cliente) {
+        this.validarCliente(cliente);
         return clienteRepository.save(cliente);
+    }
+    
+    public void validarCliente(Cliente cliente){
+        if (!cliente.getCelular().matches("\\d+")){
+            throw new IllegalArgumentException("Numero Incorrecto.");
+        }
     }
 
     @Override

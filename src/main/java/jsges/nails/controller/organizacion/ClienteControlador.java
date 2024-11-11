@@ -51,9 +51,13 @@ public class ClienteControlador {
 
 
     @PostMapping("/clientes")
-    public Cliente agregar(@RequestBody Cliente cliente){
-       // logger.info("Cliente a agregar: " + cliente);
-        return clienteServicio.guardar(cliente);
+    public ResponseEntity<Cliente> agregar(@RequestBody Cliente cliente){
+       try {
+            Cliente clienteGuardado = this.clienteServicio.guardar(cliente);
+            return ResponseEntity.ok(clienteGuardado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // Devuelve un 400 Bad Request
+        }
     }
 
 
